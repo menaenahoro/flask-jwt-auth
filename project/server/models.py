@@ -40,11 +40,11 @@ class User(db.Model):
         """
         Validates the auth token
         :param auth_token:
-        :return: integer|string
+        :return: integer|string"""
         
         try:
 
-            payload = jwt.decode(auth_token, app.config.get('SECRET_KEY'), algorithmn='HS256')
+            payload = jwt.decode(auth_token, app.config.get('SECRET_KEY'), algorithms='HS256')
             is_blacklisted_token = BlacklistToken.check_blacklist(auth_token)
             if is_blacklisted_token:
                 return 'Token blacklisted. Please log in again.'
@@ -53,13 +53,8 @@ class User(db.Model):
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please log in again.'
         except jwt.InvalidTokenError:
-            return 'Invalid token. Please log in again.'"""
+            return 'Invalid token. Please log in again.'
         
-        payload = jwt.decode(auth_token, app.config.get('SECRET_KEY'), algorithms='HS256')
-        is_blacklisted_token = BlacklistToken.check_blacklist(auth_token)
-        if is_blacklisted_token:
-            return 'Token blacklisted. Please log in again.'
-        return payload['sub']
 
 class BlacklistToken(db.Model):
     """
